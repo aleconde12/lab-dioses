@@ -2,9 +2,9 @@
 cibercafe para laboratorio de servidores y redes 1
 
 ## Instrucciones
-Se necesita tener docker y docker compose instalado en la pc
+Se necesita tener docker y docker compose instalado en la pc.
 
-1. Clonarse el repo
+1. Clonarse el repo `git clone git@github.com:aleconde12/lab-dioses.git`, o descargarlo.
 2. Ejecutar `docker compose up -d` para levantar los dos contenedores (db y web)
 3. Aguardar aproximadamente 5 minutos
 4. Ingresar desde el navegador a http://localhost:8080.
