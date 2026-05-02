@@ -15,10 +15,13 @@ apt install -y mariadb-server mariadb-client
 echo "Habilitando escucha en todas las interfaces..."
 sed -i "s/^bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf || true
 
-echo "Iniciando servicio MariaDB..."
+echo "Iniciando MariaDB..."
 service mariadb start
 
-echo "Creando base de datos, tablas y usuario..."
+# Esperar un poco a que levante
+sleep 5
+
+echo "Inicializando base..."
 
 mysql <<EOF
 CREATE DATABASE IF NOT EXISTS ${DB_NAME};
@@ -65,8 +68,7 @@ INSERT INTO usuarios (nombre) VALUES
 FLUSH PRIVILEGES;
 EOF
 
-service mariadb start
+echo "Reiniciando en modo foreground..."
+service mariadb stop
 
-echo "MariaDB iniciado, dejando contenedor activo..."
-
-tail -f /dev/null
+exec mysqld
