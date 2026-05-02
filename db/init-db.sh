@@ -59,16 +59,17 @@ CREATE TABLE IF NOT EXISTS sesiones (
 );
 
 -- Datos iniciales
-INSERT INTO maquinas (nombre) VALUES 
+INSERT IGNORE INTO maquinas (nombre) VALUES 
 ('PC-01'), ('PC-02'), ('PC-03');
 
-INSERT INTO usuarios (nombre) VALUES 
-('Cliente Generico');
+INSERT INTO usuarios (nombre)
+SELECT 'Cliente Generico'
+WHERE NOT EXISTS (
+    SELECT 1 FROM usuarios WHERE nombre = 'Cliente Generico'
+);
 
 FLUSH PRIVILEGES;
 EOF
 
-echo "Reiniciando en modo foreground..."
-service mariadb stop
-
-exec mysqld
+echo "MariaDB listo. Manteniendo contenedor activo..."
+tail -f /dev/null
