@@ -1,0 +1,33 @@
+services:
+  db-server:
+    image: debian:13
+    container_name: db-server
+    hostname: db-server
+    privileged: true
+    tty: true
+    stdin_open: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init-db.sh:/root/init-db.sh
+      - db_data:/var/lib/mysql
+    command: bash /root/init-db.sh
+
+  web-server:
+    image: debian:13
+    container_name: web-server
+    hostname: web-server
+    privileged: true
+    tty: true
+    stdin_open: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web/init-web.sh:/root/init-web.sh
+      - ./web/index.php:/var/www/html/index.php
+    depends_on:
+      - db-server
+    command: bash /root/init-web.sh
+
+volumes:
+  db_data:
