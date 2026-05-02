@@ -64,3 +64,9 @@ INSERT INTO usuarios (nombre) VALUES
 
 FLUSH PRIVILEGES;
 EOF
+
+service mariadb start
+
+echo "MariaDB iniciado, dejando contenedor activo..."
+
+tail -f /dev/null
