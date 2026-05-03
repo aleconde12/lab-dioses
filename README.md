@@ -9,4 +9,6 @@ Se necesita tener docker y docker compose instalado en la pc.
 3. Aguardar aproximadamente 5 minutos
 4. Ingresar desde el navegador a http://localhost:8080.
 
-En este momento, el laboratorio esta completamente en version beta, solo para desarrollar los scripts tanto de db como de webserver
+En este momento, el laboratorio esta completamente en version beta. 
+
+Se pueden cargar clientes, sesiones, finalizarlas y ver su costo.

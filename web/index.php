@@ -37,7 +37,7 @@ if (isset($_SESSION["empleado_id"])) {
 </head>
 <body>
 
-<h1>Cyber Conde</h1>
+<h1>Cyber Dioses</h1>
 <h2>Ingreso al sistema</h2>
 
 <form method="POST" action="login.php">
