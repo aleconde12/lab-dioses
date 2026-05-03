@@ -23,8 +23,8 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - ./web:/var/www/html
       - ./web/init-web.sh:/root/init-web.sh
-      - ./web/index.php:/var/www/html/index.php
     depends_on:
       - db-server
     command: bash /root/init-web.sh

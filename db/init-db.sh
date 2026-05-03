@@ -31,10 +31,22 @@ GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
 
 USE ${DB_NAME};
 
--- Usuarios del ciber
-CREATE TABLE IF NOT EXISTS usuarios (
+-- Empleados del ciber
+CREATE TABLE IF NOT EXISTS empleados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    rol ENUM('admin', 'empleado') NOT NULL DEFAULT 'empleado',
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Clientes del ciber
+CREATE TABLE IF NOT EXISTS clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
+    documento VARCHAR(30),
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -48,25 +60,29 @@ CREATE TABLE IF NOT EXISTS maquinas (
 -- Sesiones de uso
 CREATE TABLE IF NOT EXISTS sesiones (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT,
-    maquina_id INT,
+    cliente_id INT NOT NULL,
+    maquina_id INT NOT NULL,
+    empleado_id INT NOT NULL,
     inicio DATETIME NOT NULL,
     fin DATETIME,
     duracion_minutos INT,
     costo DECIMAL(10,2),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    FOREIGN KEY (maquina_id) REFERENCES maquinas(id)
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    FOREIGN KEY (maquina_id) REFERENCES maquinas(id),
+    FOREIGN KEY (empleado_id) REFERENCES empleados(id)
 );
 
 -- Datos iniciales
 INSERT IGNORE INTO maquinas (nombre) VALUES 
 ('PC-01'), ('PC-02'), ('PC-03');
 
-INSERT INTO usuarios (nombre)
-SELECT 'Cliente Generico'
-WHERE NOT EXISTS (
-    SELECT 1 FROM usuarios WHERE nombre = 'Cliente Generico'
-);
+INSERT INTO empleados (usuario, password, nombre, rol)
+SELECT 'admin', 'admin123', 'Administrador', 'admin'
+WHERE NOT EXISTS (SELECT 1 FROM empleados WHERE usuario = 'admin');
+
+INSERT INTO empleados (usuario, password, nombre, rol)
+SELECT 'empleado', 'empleado123', 'Empleado Demo', 'empleado'
+WHERE NOT EXISTS (SELECT 1 FROM empleados WHERE usuario = 'empleado');
 
 FLUSH PRIVILEGES;
 EOF
