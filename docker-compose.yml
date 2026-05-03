@@ -29,5 +29,14 @@ services:
       - db-server
     command: bash /root/init-web.sh
 
+  pc-ciber:
+    image: consol/ubuntu-xfce-vnc
+    container_name: pc-ciber
+    hostname: pc-ciber
+    ports:
+      - "6901:6901"
+    environment:
+      - VNC_PW=123456
+
 volumes:
   db_data:
